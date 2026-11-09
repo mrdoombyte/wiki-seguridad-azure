@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Wiki de Seguridad en Cloud Computing: Microsoft Azure</title>
+<style>
+:root{--bg:#f4f7fb;--surface:#fff;--text:#14213d;--muted:#55627a;--border:#dbe3ef;--accent:#0078d4;--accent-soft:#e6f2fb;--side:#0b2545;--side-text:#cfe0f5;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0d1420;--surface:#162032;--text:#e8eef9;--muted:#9fb0cb;--border:#26344d;--accent:#4aa3ff;--accent-soft:#16304f;--side:#08101c;--side-text:#b9cbe6}}
+:root[data-theme="dark"]{--bg:#0d1420;--surface:#162032;--text:#e8eef9;--muted:#9fb0cb;--border:#26344d;--accent:#4aa3ff;--accent-soft:#16304f;--side:#08101c;--side-text:#b9cbe6}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.65}
+.app{display:flex;min-height:100vh}
+aside{width:270px;background:var(--side);color:var(--side-text);padding:24px 16px;position:sticky;top:0;align-self:flex-start;height:100vh;overflow:auto;flex-shrink:0}
+.brand{display:flex;gap:10px;align-items:center;font-weight:700;color:#fff;margin-bottom:24px;font-size:15px;line-height:1.3}
+.brand span.logo{font-size:26px}
+nav button{display:flex;gap:10px;align-items:center;width:100%;text-align:left;background:none;border:0;color:inherit;padding:11px 12px;border-radius:10px;font:inherit;font-size:14.5px;cursor:pointer;margin-bottom:4px}
+nav button:hover{background:rgba(255,255,255,.08)}
+nav button.on{background:var(--accent);color:#fff;font-weight:600}
+main{flex:1;min-width:0;padding:40px clamp(18px,5vw,64px);max-width:920px}
+.crumb{font-size:13px;color:var(--muted);margin-bottom:8px}
+h1{font-size:clamp(26px,4vw,36px);line-height:1.2;margin:0 0 20px}
+.lead{font-size:17px;color:var(--muted);margin:0 0 28px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));margin:12px 0 28px}
+.item h3{margin:0 0 6px;font-size:16px;color:var(--accent)}
+.item p{margin:0;color:var(--muted);font-size:14.5px}
+h2{font-size:19px;margin:28px 0 10px}
+.pill{display:inline-block;background:var(--accent-soft);color:var(--accent);border-radius:99px;padding:3px 12px;font-size:12.5px;font-weight:600;margin:0 6px 6px 0}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:40px}
+.pager button{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:10px 16px;font:inherit;cursor:pointer}
+.pager button:hover{border-color:var(--accent);color:var(--accent)}
+.steps{counter-reset:s;display:grid;gap:12px;margin:12px 0}
+.steps .card{position:relative;padding-left:60px}
+.steps .card::before{counter-increment:s;content:counter(s);position:absolute;left:16px;top:16px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700}
+.steps p{margin:0}
+.top{display:none}
+@media (max-width:800px){
+.app{display:block}
+aside{position:static;width:100%;height:auto;padding:14px}
+.brand{margin-bottom:12px}
+nav{display:flex;gap:6px;overflow-x:auto}
+nav button{white-space:nowrap;width:auto;margin:0}
+main{padding:24px 18px}
+}
+footer{margin-top:48px;font-size:12.5px;color:var(--muted);border-top:1px solid var(--border);padding-top:16px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script>
+const h = React.createElement;
+const { useState, useEffect } = React;
+
+const PAGES = [
+  { id: "inicio", icon: "🏠", nav: "Inicio", title: "Wiki de Seguridad en Cloud Computing: Microsoft Azure",
+    intro: "Bienvenido a la Wiki de Seguridad en la Nube. Esta plataforma está diseñada para evaluar aspectos de seguridad de soluciones en la nube, con el objetivo de proteger los datos y garantizar una mayor disponibilidad, considerando siempre la normativa legal vigente.",
+    sub: "Esta wiki se fundamenta en tres pilares normativos y técnicos principales:",
+    cards: [
+      { t: "Azure Well-Architected Framework", d: "Pilar de Seguridad de Microsoft Azure." },
+      { t: "Cloud Controls Matrix (CCM)", d: "Marco de controles de Cloud Security Alliance (CSA)." },
+      { t: "NIST SP 800-53 (Rev. 5)", d: "Controles de seguridad y privacidad del National Institute of Standards and Technology." }
+    ] },
+  { id: "caracteristicas", icon: "🛡️", nav: "1. Características de seguridad", title: "Identificación de Recursos y Características",
+    crumb: "Sección 1: Características de Seguridad en la Nube",
+    intro: "En un entorno cloud (como bases de datos, servidores, usuarios y redes), es fundamental identificar los recursos que requieren medidas de protección frente a riesgos.",
+    sub: "Las principales características de seguridad que ofrece la plataforma Azure incluyen:",
+    cards: [
+      { t: "Autenticación Multifactor (MFA)", d: "Capa adicional de seguridad para la verificación de usuarios." },
+      { t: "Cifrado", d: "Protección de la confidencialidad de los datos en tránsito y en reposo." },
+      { t: "Monitoreo", d: "Observabilidad continua del entorno para detectar anomalías." },
+      { t: "Políticas de acceso", d: "Reglas estrictas para el control sobre quién puede acceder a qué recursos." }
+    ] },
+  { id: "iam", icon: "🔑", nav: "2. Control de acceso (IAM y RBAC)", title: "Gestión de Identidad y Accesos en Azure",
+    crumb: "Sección 2: Control de Acceso e Identidad (IAM y RBAC)",
+    intro: "El control de acceso seguro se implementa aplicando los principios de IAM (Identity and Access Management) y gestionando las identidades mediante herramientas como Azure Active Directory (actualmente Microsoft Entra ID).",
+    sub: "Las configuraciones clave incluyen:",
+    cards: [
+      { t: "Modelo RBAC", d: "Control de Acceso Basado en Roles: consiste en documentar y configurar parámetros como roles, contraseñas, autenticación multifactor y privilegios mínimos." },
+      { t: "Least Privilege Access", d: "Privilegio Mínimo: se debe verificar que los permisos asignados sean coherentes con los perfiles definidos, otorgando únicamente los accesos estrictamente necesarios para cada rol." },
+      { t: "Inicio de sesión seguro", d: "Las políticas de inicio de sesión seguro contribuyen a fortalecer la seguridad del entorno y prevenir accesos no autorizados." }
+    ], tags: ["IAM", "RBAC", "Microsoft Entra ID", "MFA"] },
+  { id: "auditoria", icon: "📊", nav: "3. Auditoría y monitoreo", title: "Trazabilidad y Auditoría de Datos",
+    crumb: "Sección 3: Auditoría y Monitoreo (NIST SP 800-53)",
+    intro: "Para garantizar el cumplimiento de la normativa NIST SP 800-53, es esencial revisar el módulo o consola de auditoría del entorno cloud.",
+    sub: "Un monitoreo constante y actualizado permite:",
+    cards: [
+      { t: "Registros de actividad", d: "Identificar los registros de actividad y eventos relacionados con los accesos y cambios en la configuración." },
+      { t: "Eventos críticos", d: "Analizar eventos críticos para la seguridad del sistema, tales como accesos no autorizados, intentos fallidos de inicio de sesión o modificaciones de permisos." },
+      { t: "Trazabilidad completa", d: "Mantener la trazabilidad completa de las acciones para asegurar la gestión segura de los datos." }
+    ], tags: ["NIST SP 800-53", "Auditoría", "Logs"] },
+  { id: "mejora", icon: "🚀", nav: "4. Evaluación y mejora continua", title: "Optimización y Recomendaciones",
+    crumb: "Sección 4: Evaluación y Mejora Continua",
+    intro: "La seguridad en la nube no es estática; requiere analizar las configuraciones realizadas e identificar posibles oportunidades de mejora en el control de accesos o protección de datos.",
+    sub: "Para optimizar la seguridad y el cumplimiento, se recomienda:",
+    steps: [
+      "Formular recomendaciones técnicas y normativas basadas en el Microsoft Azure Well-Architected Framework.",
+      "Alinear los controles con la Cloud Controls Matrix (CCM) de CSA.",
+      "Asegurar que los procedimientos de auditoría y tratamiento de datos se mantengan bajo los estándares de la normativa NIST SP 800-53 (Rev. 5)."
+    ] }
+];
+
+const fromHash = () => {
+  const id = location.hash.replace("#", "");
+  const i = PAGES.findIndex(p => p.id === id);
+  return i < 0 ? 0 : i;
+};
+
+function App() {
+  const [i, setI] = useState(fromHash());
+  useEffect(() => {
+    const f = () => setI(fromHash());
+    window.addEventListener("hashchange", f);
+    return () => window.removeEventListener("hashchange", f);
+  }, []);
+  const go = (n) => { location.hash = PAGES[n].id; window.scrollTo({ top: 0 }); };
+  const p = PAGES[i];
+
+  return h("div", { className: "app" },
+    h("aside", null,
+      h("div", { className: "brand" }, h("span", { className: "logo" }, "☁️"), h("div", null, "Wiki de Seguridad", h("br"), "Microsoft Azure")),
+      h("nav", null, PAGES.map((q, n) =>
+        h("button", { key: q.id, className: n === i ? "on" : "", onClick: () => go(n) }, h("span", null, q.icon), q.nav)))
+    ),
+    h("main", null,
+      h("div", { className: "crumb" }, p.icon + " " + (p.crumb || "Inicio")),
+      h("h1", null, p.title),
+      h("p", { className: "lead" }, p.intro),
+      h("h2", null, p.sub),
+      p.cards && h("div", { className: "grid" }, p.cards.map(c =>
+        h("div", { className: "card item", key: c.t }, h("h3", null, c.t), h("p", null, c.d)))),
+      p.steps && h("div", { className: "steps" }, p.steps.map((s, n) =>
+        h("div", { className: "card", key: n }, h("p", null, s)))),
+      p.tags && h("div", null, p.tags.map(t => h("span", { className: "pill", key: t }, t))),
+      h("div", { className: "pager" },
+        i > 0 ? h("button", { onClick: () => go(i - 1) }, "← " + PAGES[i - 1].nav) : h("span"),
+        i < PAGES.length - 1 ? h("button", { onClick: () => go(i + 1) }, PAGES[i + 1].nav + " →") : h("span")),
+      h("footer", null, "Basada en Azure Well-Architected Framework (Seguridad), CSA Cloud Controls Matrix y NIST SP 800-53 Rev. 5.")
+    )
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(h(App));
+</script>
+</body>
+</html>
